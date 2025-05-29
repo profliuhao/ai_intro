@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="navigation.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px 20px;
+        }
+
+        .generator-container {
+            max-width: 1000px;
+            width: 95%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .input-container {
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            height: 100px;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .control-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .param-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="number"], 
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .aspect-ratio-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .aspect-ratio-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .aspect-ratio-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #5a6ecc;
+        }
+
+        .output-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-output {
+            width: 100%;
+            max-width: 768px;
+            min-height: 256px;
+            max-height: 768px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-output img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .status {
+            font-size: 1rem;
+            color: #667eea;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 4rem;
+            margin: 20px 0;
+            display: block;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="generator-container">
+        <span class="emoji">🎨✨</span>
+        <h1>AI Image Generator</h1>
+        <p>Enter a text prompt to generate an image using artificial intelligence</p>
+        
+        <div class="instructions">
+            <p><strong>Instructions:</strong></p>
+            <ul style="padding-left: 20px; margin-bottom: 15px;">
+                <li>Enter a detailed description of what you want to see in the image</li>
+                <li>Adjust parameters as needed (higher steps = better quality but slower)</li>
+                <li>Choose dimensions for your image (square 1:1 or rectangular like 3:2)</li>
+                <li>Click "Generate Image" and wait for the result</li>
+            </ul>
+        </div>
+
+        <div class="input-container">
+            <textarea id="promptInput" placeholder="Describe the image you want to generate... (e.g., 'masterpiece best quality landscape with mountains and lake')"></textarea>
+            
+            <div class="control-panel">
+                <div class="param-group">
+                    <label for="steps">Steps:</label>
+                    <input type="number" id="steps" min="1" max="50" value="20">
+                </div>
+                
+                <div class="param-group">
+                    <label for="cfg">CFG Scale:</label>
+                    <input type="number" id="cfg" min="1" max="20" value="8" step="0.5">
+                </div>
+                
+                <div class="param-group">
+                    <label for="seed">Seed:</label>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <input type="number" id="seed" min="0" max="9999999999" value="0" style="flex-grow: 1;">
+                        <div id="seedLock" style="cursor: pointer; font-size: 1.2rem;" title="Click to lock/unlock seed">🔓</div>
+                        <div id="randomizeSeed" style="cursor: pointer; font-size: 1rem; background: #f0f0f0; padding: 4px 8px; border-radius: 4px;" title="Generate new random seed">🎲</div>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 0.8rem; color: #666;">
+                        <span style="font-style: italic;">Auto-randomized unless locked</span>
+                    </div>
+                </div>
+                
+                <div class="param-group">
+                    <label for="negativePrompt">Negative Prompt:</label>
+                    <input type="text" id="negativePrompt" value="bad hands, bad quality, worst quality">
+                </div>
+                
+                <div class="param-group">
+                    <label>Image Dimensions:</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                            <label for="width" style="font-size: 0.8rem; margin-bottom: 2px;">Width:</label>
+                            <input type="number" id="width" min="256" max="1024" step="64" value="512">
+                        </div>
+                        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                            <label for="height" style="font-size: 0.8rem; margin-bottom: 2px;">Height:</label>
+                            <input type="number" id="height" min="256" max="1024" step="64" value="512">
+                        </div>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                        <button type="button" class="aspect-ratio-btn" data-width="512" data-height="512">1:1</button>
+                        <button type="button" class="aspect-ratio-btn" data-width="768" data-height="512">3:2</button>
+                        <button type="button" class="aspect-ratio-btn" data-width="512" data-height="768">2:3</button>
+                        <button type="button" class="aspect-ratio-btn" data-width="640" data-height="384">5:3</button>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 0.8rem; color: #666;">
+                        <span style="font-style: italic;">Dimensions in pixels (256-1024)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="generateBtn">Generate Image</button>
+        </div>
+        
+        <div class="output-container">
+            <div id="status" class="status"></div>
+            <div id="loading" class="loading hidden"></div>
+            <div id="errorMessage" class="error-message hidden"></div>
+            <div id="imageOutput" class="image-output">
+                <p>Generated image will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const promptInput = document.getElementById('promptInput');
+            const negativePrompt = document.getElementById('negativePrompt');
+            const steps = document.getElementById('steps');
+            const cfg = document.getElementById('cfg');
+            const seed = document.getElementById('seed');
+            const seedLock = document.getElementById('seedLock');
+            const width = document.getElementById('width');
+            const height = document.getElementById('height');
+            const status = document.getElementById('status');
+            const loading = document.getElementById('loading');
+            const imageOutput = document.getElementById('imageOutput');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Server configuration
+            const serverAddress = "127.0.0.1:8188";
+            const clientId = generateUUID();
+            
+            // Seed locking state
+            let isSeedLocked = false;
+            
+            // Function to generate a random seed
+            function generateRandomSeed() {
+                return Math.floor(Math.random() * 9999999999);
+            }
+            
+            // Handle seed lock toggle
+            seedLock.addEventListener('click', function() {
+                isSeedLocked = !isSeedLocked;
+                seedLock.textContent = isSeedLocked ? '🔒' : '🔓';
+                seedLock.title = isSeedLocked ? 'Seed is locked' : 'Seed will be randomized';
+                seed.disabled = isSeedLocked;
+            });
+            
+            // Handle manual seed randomization
+            document.getElementById('randomizeSeed').addEventListener('click', function() {
+                const randomSeed = generateRandomSeed();
+                seed.value = randomSeed;
+                debugLog(`Manually generated random seed: ${randomSeed}`);
+            });
+            
+            // Add debug information function
+            function debugLog(message) {
+                console.log(`[${new Date().toISOString()}] ${message}`);
+                // Can also show debug in UI if needed
+                // document.getElementById('status').textContent += "\n" + message;
+            }
+            
+            generateBtn.addEventListener('click', async function() {
+                if (!promptInput.value.trim()) {
+                    showError("Please enter a prompt for image generation");
+                    return;
+                }
+                
+                debugLog("Starting image generation process");
+                
+                try {
+                    // Show loading state
+                    generateBtn.disabled = true;
+                    loading.classList.remove('hidden');
+                    imageOutput.innerHTML = '';
+                    status.textContent = "Connecting to server...";
+                    errorMessage.classList.add('hidden');
+                    
+                    // Randomize seed if not locked
+                    if (!isSeedLocked) {
+                        const randomSeed = Math.floor(Math.random() * 9999999999);
+                        seed.value = randomSeed;
+                        debugLog(`Generated random seed: ${randomSeed}`);
+                    }
+                    
+                    // Validate dimensions
+                    const dimensions = validateDimensions();
+                    const imgWidth = dimensions.width;
+                    const imgHeight = dimensions.height;
+                    
+                    debugLog(`Using dimensions: ${imgWidth}×${imgHeight}`);
+                    
+                    // Create the prompt
+                    const prompt = createPrompt(
+                        promptInput.value,
+                        negativePrompt.value,
+                        parseInt(steps.value),
+                        parseFloat(cfg.value),
+                        parseInt(seed.value),
+                        imgWidth,
+                        imgHeight
+                    );
+                    
+                    // Connect to WebSocket and get images
+                    status.textContent = "Generating image...";
+                    debugLog(`Connecting to WebSocket: ws://${serverAddress}/ws?clientId=${clientId}`);
+                    const ws = new WebSocket(`ws://${serverAddress}/ws?clientId=${clientId}`);
+                    
+                    ws.onopen = async function() {
+                        debugLog("WebSocket connection established");
+                        try {
+                            // Queue the prompt
+                            const promptId = await queuePrompt(prompt);
+                            
+                            debugLog(`Prompt queued with ID: ${promptId}`);
+                            
+                            // Process WebSocket messages
+                            const imageData = await processWebSocketMessages(ws, promptId);
+                            debugLog("Image data processing completed");
+                            
+                            if (imageData) {
+                                // Display the image
+                                const img = document.createElement('img');
+                                img.src = `data:image/png;base64,${imageData}`;
+                                img.onload = () => debugLog("Image loaded successfully");
+                                img.onerror = (e) => debugLog(`Image load error: ${e}`);
+                                
+                                // Create container for image and info
+                                const container = document.createElement('div');
+                                container.style.display = 'flex';
+                                container.style.flexDirection = 'column';
+                                container.style.alignItems = 'center';
+                                container.style.width = '100%';
+                                
+                                // Add the image
+                                container.appendChild(img);
+                                
+                                // Add image info
+                                const imageInfo = document.createElement('div');
+                                imageInfo.style.marginTop = '10px';
+                                imageInfo.style.fontSize = '0.9rem';
+                                imageInfo.style.color = '#666';
+                                imageInfo.innerHTML = `Seed: <strong>${seed.value}</strong> | Dimensions: <strong>${width.value}×${height.value}</strong>`;
+                                container.appendChild(imageInfo);
+                                
+                                imageOutput.innerHTML = '';
+                                imageOutput.appendChild(container);
+                                status.textContent = "Image generated successfully!";
+                            } else {
+                                showError("No image data received");
+                            }
+                        } catch (error) {
+                            showError(`Error during processing: ${error.message}`);
+                        } finally {
+                            ws.close();
+                        }
+                    };
+                    
+                    ws.onerror = function(error) {
+                        showError(`WebSocket error: ${error.message || "Connection failed"}`);
+                        ws.close();
+                    };
+                } catch (error) {
+                    showError(`Error: ${error.message}`);
+                } finally {
+                    loading.classList.add('hidden');
+                    generateBtn.disabled = false;
+                }
+            });
+            
+            // Function to create the prompt structure
+            function createPrompt(positivePrompt, negativePrompt, steps, cfgScale, seedValue, imgWidth, imgHeight) {
+                return {
+                    "3": {
+                        "class_type": "KSampler",
+                        "inputs": {
+                            "cfg": cfgScale,
+                            "denoise": 1,
+                            "latent_image": [
+                                "5",
+                                0
+                            ],
+                            "model": [
+                                "4",
+                                0
+                            ],
+                            "negative": [
+                                "7",
+                                0
+                            ],
+                            "positive": [
+                                "6",
+                                0
+                            ],
+                            "sampler_name": "euler",
+                            "scheduler": "normal",
+                            "seed": seedValue,
+                            "steps": steps
+                        }
+                    },
+                    "4": {
+                        "class_type": "CheckpointLoaderSimple",
+                        "inputs": {
+                            "ckpt_name": "flux1-dev-fp8.safetensors"
+                        }
+                    },
+                    "5": {
+                        "class_type": "EmptyLatentImage",
+                        "inputs": {
+                            "batch_size": 1,
+                            "height": imgHeight,
+                            "width": imgWidth
+                        }
+                    },
+                    "6": {
+                        "class_type": "CLIPTextEncode",
+                        "inputs": {
+                            "clip": [
+                                "4",
+                                1
+                            ],
+                            "text": positivePrompt
+                        }
+                    },
+                    "7": {
+                        "class_type": "CLIPTextEncode",
+                        "inputs": {
+                            "clip": [
+                                "4",
+                                1
+                            ],
+                            "text": negativePrompt
+                        }
+                    },
+                    "8": {
+                        "class_type": "VAEDecode",
+                        "inputs": {
+                            "samples": [
+                                "3",
+                                0
+                            ],
+                            "vae": [
+                                "4",
+                                2
+                            ]
+                        }
+                    },
+                    "save_image_websocket_node": {
+                        "class_type": "SaveImageWebsocket",
+                        "inputs": {
+                            "images": [
+                                "8",
+                                0
+                            ]
+                        }
+                    }
+                };
+            }
+            
+            // Queue a prompt and get the prompt_id
+            async function queuePrompt(prompt) {
+                const response = await fetch(`http://${serverAddress}/prompt`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        client_id: clientId
+                    }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to queue prompt: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                return data.prompt_id;
+            }
+            
+            // Process WebSocket messages
+            function processWebSocketMessages(ws, promptId) {
+                return new Promise((resolve, reject) => {
+                    let imageData = null;
+                    let currentNode = "";
+                    let executionCompleted = false;
+                    
+                    // Function to check if we can resolve the promise
+                    function tryResolve() {
+                        if (executionCompleted && imageData) {
+                            resolve(imageData);
+                        } else if (executionCompleted && !imageData) {
+                            reject(new Error("Execution completed but no image was generated"));
+                        }
+                    }
+                    
+                    ws.onmessage = function(event) {
+                        try {
+                            if (typeof event.data === 'string') {
+                                const message = JSON.parse(event.data);
+                                
+                                if (message.type === 'executing') {
+                                    const data = message.data;
+                                    
+                                    if (data.prompt_id === promptId) {
+                                        if (data.node === null) {
+                                            // Execution is done
+                                            executionCompleted = true;
+                                            status.textContent = "Execution completed, finalizing image...";
+                                            // Wait a short time to allow any pending image data to be processed
+                                            setTimeout(tryResolve, 500);
+                                        } else {
+                                            currentNode = data.node;
+                                            status.textContent = `Processing node: ${data.node}`;
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Binary data (image)
+                                if (currentNode === 'save_image_websocket_node') {
+                                    // Convert binary data to base64
+                                    const blob = new Blob([event.data.slice(8)]);  // Skip the first 8 bytes
+                                    const reader = new FileReader();
+                                    
+                                    reader.onload = function() {
+                                        const base64data = reader.result.split(',')[1];
+                                        imageData = base64data;
+                                        status.textContent = "Image data received";
+                                        
+                                        // If execution is already complete, resolve now
+                                        if (executionCompleted) {
+                                            tryResolve();
+                                        }
+                                    };
+                                    reader.readAsDataURL(blob);
+                                }
+                            }
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    
+                    // Handle WebSocket errors
+                    ws.onerror = function(error) {
+                        reject(new Error("WebSocket error"));
+                    };
+                    
+                    // Handle WebSocket close
+                    ws.onclose = function() {
+                        if (imageData) {
+                            resolve(imageData);
+                        } else {
+                            reject(new Error("WebSocket connection closed before receiving image"));
+                        }
+                    };
+                    
+                    // Alternative direct processing for binary data
+                    ws.binaryType = 'arraybuffer';
+                    
+                    // Set timeout
+                    setTimeout(() => {
+                        if (!imageData) {
+                            reject(new Error("Timeout: No response from server"));
+                        }
+                    }, 60000); // 60 second timeout
+                });
+            }
+            
+            // Generate UUID for client_id
+            function generateUUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+            
+            // Show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.classList.remove('hidden');
+                status.textContent = "Error occurred";
+            }
+            
+            // Function to validate and adjust dimensions
+            function validateDimensions() {
+                // Ensure dimensions are within valid range
+                let imgWidth = parseInt(width.value) || 512;
+                let imgHeight = parseInt(height.value) || 512;
+                
+                // Clamp to valid range
+                imgWidth = Math.min(Math.max(imgWidth, 256), 1024);
+                imgHeight = Math.min(Math.max(imgHeight, 256), 1024);
+                
+                // Round to nearest multiple of 8 (required by some models)
+                imgWidth = Math.floor(imgWidth / 8) * 8;
+                imgHeight = Math.floor(imgHeight / 8) * 8;
+                
+                // Update input fields
+                width.value = imgWidth;
+                height.value = imgHeight;
+                
+                return { width: imgWidth, height: imgHeight };
+            }
+            
+            // Add event listeners for dimension inputs
+            width.addEventListener('change', validateDimensions);
+            height.addEventListener('change', validateDimensions);
+            
+            // Handle aspect ratio buttons
+            document.querySelectorAll('.aspect-ratio-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    document.querySelectorAll('.aspect-ratio-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Set width and height values
+                    width.value = this.getAttribute('data-width');
+                    height.value = this.getAttribute('data-height');
+                    
+                    // Validate dimensions
+                    const dims = validateDimensions();
+                    debugLog(`Set dimensions to ${dims.width}×${dims.height}`);
+                });
+            });
+            
+            // Generate random seed when page loads
+            seed.value = generateRandomSeed();
+            debugLog(`Initial random seed: ${seed.value}`);
+        });
+    </script>
+</body>
+</html>

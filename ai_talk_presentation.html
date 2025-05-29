@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="navigation.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI: Your Digital Co-Pilot for College & Beyond</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            max-width: 1000px;
+            width: 95%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 60px;
+            min-height: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            color: #34495e;
+            margin-bottom: 30px;
+        }
+
+        .slide h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .emoji {
+            font-size: 4rem;
+            margin: 20px 0;
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .career-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .career-card {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .career-card:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .career-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .interactive-section {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+        }
+
+        .quiz-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1);
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #d299c2, #fef9d7);
+            border-left: 5px solid #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            font-style: italic;
+            font-size: 1.3rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide.active * {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .hidden-answer {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .reveal-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-counter">1 / 8</div>
+            <span class="emoji">🤖✨</span>
+            <h1>AI: Your Digital Co-Pilot</h1>
+            <h2>for College & Beyond</h2>
+            <p>Welcome future AI innovators! Ready to explore how AI will shape your academic and professional journey?</p>
+            <div class="quote-box">
+                "The future belongs to those who understand AI - not just how to use it, but how to think with it." 
+            </div>
+        </div>
+
+        <!-- Slide 2: AI Right Now -->
+        <div class="slide">
+            <div class="slide-counter">2 / 8</div>
+            <h2>🔥 AI Right Now: The Revolution is Here</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">175B</span>
+                    <span class="stat-label">Parameters in GPT-3</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">100M+</span>
+                    <span class="stat-label">ChatGPT users in 2 months</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">85%</span>
+                    <span class="stat-label">of jobs will be affected by AI</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$15.7T</span>
+                    <span class="stat-label">AI's economic impact by 2030</span>
+                </div>
+            </div>
+            <p>From your Spotify recommendations to your Instagram filters, AI is already everywhere in your daily life!</p>
+        </div>
+
+        <!-- Slide 3: AI in College -->
+        <div class="slide">
+            <div class="slide-counter">3 / 8</div>
+            <h2>🎓 AI in College: Your Academic Game-Changer</h2>
+            <div class="career-grid">
+                <div class="career-card">
+                    <div class="career-icon">📚</div>
+                    <h3>Research Assistant</h3>
+                    <p>AI helps you find sources, summarize papers, and identify research gaps faster than ever</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">✍️</div>
+                    <h3>Writing Partner</h3>
+                    <p>Brainstorm ideas, check grammar, and improve clarity (while maintaining academic integrity!)</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">🧮</div>
+                    <h3>Study Buddy</h3>
+                    <p>Generate practice problems, explain complex concepts, and create personalized study plans</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">💡</div>
+                    <h3>Creative Catalyst</h3>
+                    <p>From art projects to coding assignments, AI sparks creativity across all majors</p>
+                </div>
+            </div>
+            <div class="quote-box">
+                Pro Tip: The key is collaboration, not replacement. AI amplifies your abilities!
+            </div>
+        </div>
+
+        <!-- Slide 4: Career Landscape -->
+        <div class="slide">
+            <div class="slide-counter">4 / 8</div>
+            <h2>🚀 Career Universe: Where AI Takes You</h2>
+            <h3>Traditional AI Roles</h3>
+            <div class="skills-list">
+                <div class="skill-tag">🤖 ML Engineer</div>
+                <div class="skill-tag">📊 Data Scientist</div>
+                <div class="skill-tag">🔬 AI Researcher</div>
+                <div class="skill-tag">🏗️ AI Architect</div>
+            </div>
+            <h3>The New Wave</h3>
+            <div class="skills-list">
+                <div class="skill-tag">🎯 AI Product Manager</div>
+                <div class="skill-tag">⚖️ AI Ethics Officer</div>
+                <div class="skill-tag">🎭 AI Trainer/Prompter</div>
+                <div class="skill-tag">🎨 AI-Human Designer</div>
+            </div>
+            <h3>AI-Enhanced Traditional Careers</h3>
+            <div class="skills-list">
+                <div class="skill-tag">🏥 AI-Powered Doctor</div>
+                <div class="skill-tag">📈 AI-Savvy Marketer</div>
+                <div class="skill-tag">🎵 AI-Assisted Musician</div>
+                <div class="skill-tag">📚 AI-Enhanced Teacher</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Interactive Challenge -->
+        <div class="slide">
+            <div class="slide-counter">5 / 8</div>
+            <h2>🎮 Challenge Time: AI Detective!</h2>
+            <div class="interactive-section">
+                <h3>Can you spot the AI-generated content?</h3>
+                <p><strong>Text Sample A:</strong> "The golden sunset painted the sky in hues of amber and rose, while gentle waves lapped against the weathered dock where an old fisherman cast his line into the tranquil waters, hoping for one last catch before nightfall embraced the sleepy coastal town."</p>
+                <button class="quiz-button" onclick="revealAnswer('answer1')">Human or AI?</button>
+                <div id="answer1" class="hidden-answer">
+                    <strong>Answer:</strong> This is AI-generated! The overly poetic language and perfect scene composition are typical AI patterns.
+                </div>
+
+                <p><strong>Text Sample B:</strong> "idk why but every time I try to study for chemistry I just end up watching tiktoks about cats. like my brain literally cannot focus on molecular structures when there are orange tabby cats being adorable somewhere. college is weird."</p>
+                <button class="quiz-button" onclick="revealAnswer('answer2')">Human or AI?</button>
+                <div id="answer2" class="hidden-answer">
+                    <strong>Answer:</strong> This is human! The casual tone, typos, and stream-of-consciousness style are very human characteristics.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Skills for Success -->
+        <div class="slide">
+            <div class="slide-counter">6 / 8</div>
+            <h2>💪 Your AI Success Toolkit</h2>
+            <div class="career-grid">
+                <div class="career-card">
+                    <div class="career-icon">🎯</div>
+                    <h3>Prompt Engineering</h3>
+                    <p>Master the art of talking to AI - it's like learning a new language that unlocks superpowers!</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">🕵️</div>
+                    <h3>Critical Thinking</h3>
+                    <p>Question everything! AI isn't always right - you need to be the human fact-checker.</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">📊</div>
+                    <h3>Data Literacy</h3>
+                    <p>Understand how data flows through AI systems and what it means for accuracy and bias.</p>
+                </div>
+                <div class="career-card">
+                    <div class="career-icon">🤝</div>
+                    <h3>Human Skills</h3>
+                    <p>Creativity, empathy, and complex problem-solving - your uniquely human superpowers!</p>
+                </div>
+            </div>
+            <div class="quote-box">
+                Remember: AI is a tool that amplifies human intelligence, not a replacement for it!
+            </div>
+        </div>
+
+        <!-- Slide 7: Future Outlook -->
+        <div class="slide">
+            <div class="slide-counter">7 / 8</div>
+            <h2>🔮 The Future is NOW-ish</h2>
+            <h3>What's Coming Next?</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">2025</span>
+                    <span class="stat-label">AI tutors in most colleges</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2027</span>
+                    <span class="stat-label">AI coding assistants standard</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2030</span>
+                    <span class="stat-label">AI-human collaboration norm</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Possibilities for your generation!</span>
+                </div>
+            </div>
+            <p>You're not just learning about AI - you're helping to shape its future. The next breakthrough could come from someone in this room!</p>
+        </div>
+
+        <!-- Slide 8: Call to Action -->
+        <div class="slide">
+            <div class="slide-counter">8 / 8</div>
+            <span class="emoji">🚀🌟</span>
+            <h2>Your AI Journey Starts Now!</h2>
+            <div class="skills-list">
+                <div class="skill-tag">🔥 Experiment with AI tools</div>
+                <div class="skill-tag">📚 Keep learning & building</div>
+                <div class="skill-tag">🤝 Join AI communities</div>
+                <div class="skill-tag">🎯 Practice prompt engineering</div>
+                <div class="skill-tag">💡 Think ethically about AI</div>
+                <div class="skill-tag">🌍 Use AI to solve real problems</div>
+            </div>
+            <div class="quote-box">
+                "The best way to predict the future is to invent it. And you're the generation that's going to do exactly that with AI."
+            </div>
+            <h3>Questions? Let's Chat! 💬</h3>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function revealAnswer(id) {
+            const answer = document.getElementById(id);
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+
+        // Add some interactive elements
+        document.querySelectorAll('.career-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = this.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+            });
+        });
+    </script>
+</body>
+</html>

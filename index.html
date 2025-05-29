@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Presentations Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .presentation-container {
+      max-width: 1000px;
+      width: 95%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      padding: 60px;
+      text-align: center;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #34495e;
+      margin-bottom: 30px;
+    }
+
+    .presentation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .presentation-card {
+      background: white;
+      border: 3px solid #667eea;
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .presentation-card:hover {
+      background: #667eea;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .presentation-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .emoji {
+      font-size: 4rem;
+      margin: 20px 0;
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .presentation-container * {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+  </style>
+  <script src="navigation.js"></script>
+</head>
+<body>
+  <div class="presentation-container">
+    <header>
+      <span class="emoji">✨🤖</span>
+      <h1>AI Presentations Hub</h1>
+      <h2>A collection of AI-related presentations and resources</h2>
+    </header>
+    
+    <div class="presentation-grid">
+      <a href="aigc_presentation.html" class="presentation-card">
+        <div class="presentation-icon">🎨</div>
+        <h3>AI-Generated Content</h3>
+        <p>Explore the world of AIGC and its applications</p>
+      </a>
+      <a href="ai_talk_presentation.html" class="presentation-card">
+        <div class="presentation-icon">🚀</div>
+        <h3>AI Talk</h3>
+        <p>Learn how AI can be your digital co-pilot</p>
+      </a>
+      <a href="ai_learning_resources.html" class="presentation-card">
+        <div class="presentation-icon">📚</div>
+        <h3>Learning Resources</h3>
+        <p>Discover tools and materials to enhance your AI knowledge</p>
+      </a>
+      <a href="ai_history_presentation.html" class="presentation-card">
+        <div class="presentation-icon">🧠</div>
+        <h3>AI History</h3>
+        <p>Understand the evolution of artificial intelligence</p>
+      </a>
+      <a href="ai_functions_presentation.html" class="presentation-card">
+        <div class="presentation-icon">⚙️</div>
+        <h3>AI Functions</h3>
+        <p>Explore the capabilities and functionalities of AI</p>
+      </a>
+      <a href="ai_image_generator.html" class="presentation-card">
+        <div class="presentation-icon">🖼️</div>
+        <h3>AI Image Generator</h3>
+        <p>Generate images from text using AI technology</p>
+      </a>
+    </div>
+    
+    <footer>
+      <p>&copy; 2023 AI Presentations Hub</p>
+    </footer>
+  </div>
+</body>
+</html>
