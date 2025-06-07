@@ -1150,19 +1150,18 @@
             // Only handle space key navigation if NOT in an input field
             if (event.code === 'Space' && !isInputField) {
                 event.preventDefault(); // Prevent default space behavior
-                nextSlide(); // Or whatever your next slide function is called
+                changeSlide(1); // Or whatever your next slide function is called
             }
 
             // Handle other navigation keys (arrow keys, etc.)
             if (!isInputField) {
                 if (event.key === 'ArrowRight') {
-                    nextSlide();
+                    changeSlide(1);
                 } else if (event.key === 'ArrowLeft') {
-                    previousSlide();
+                    changeSlide(-1);
                 }
             }
         });
-
 
         // Initialize
         showSlide(0);
