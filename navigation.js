@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Navigation links HTML with improved styling
   navElement.innerHTML = `
     <div style="max-width: 800px; margin: 0 auto;">
-      <a href="index.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">Home</a> | 
-      <a href="aigc_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">AIGC</a> | 
+      <a href="index.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">Home</a> | 
+      <a href="aigc_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">AIGC</a> | 
 <!--      <a href="ai_talk_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">AI Talk</a> | -->
-      <a href="ai_learning_resources.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">Learning Resources</a> | 
-      <a href="ai_history_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">AI History</a> | 
-      <a href="ai_functions_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">AI Functions</a> | 
-      <a href="ai_image_generator.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 15px; margin: 0 5px; transition: all 0.3s ease;">Image Generator</a>
+      <a href="ai_learning_resources.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">Learning Resources</a> | 
+      <a href="ai_history_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">AI History</a> | 
+      <a href="ai_functions_presentation.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">AI Functions</a> | 
+      <a href="ai_image_generator.html" style="text-decoration: none; color: #667eea; font-weight: bold; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">Image Generator</a>
     </div>
   `;
   
