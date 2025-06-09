@@ -575,6 +575,32 @@
             font-weight: bold;
             margin-bottom: 8px;
         }
+
+        .demo-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ecdc4, #45b7d1);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .demo-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.4);
+            background: linear-gradient(135deg, #45b7d1, #4ecdc4);
+        }
+
+        .aigc-card {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -924,13 +950,17 @@
                         <strong>Tools:</strong> Canva AI, Buffer AI, Hootsuite AI, Later AI
                     </div>
                 </div>
-                
-                <div class="aigc-card">
+
+                <div class="aigc-card" onclick="window.open('beautiful-tetris.html', '_blank')">
                     <span class="card-icon">🎮</span>
                     <div class="card-title">Game Development</div>
                     <div class="card-desc">Character art, backgrounds, music, sound effects, even code</div>
                     <div class="card-example">
                         <strong>Tools:</strong> Artbreeder, AIVA, ChatGPT for game logic
+                        <br><br>
+                        <a href="beautiful-tetris.html" target="_blank" class="demo-link" onclick="event.stopPropagation()">
+                            🚀 Try Our AI-Enhanced Tetris Game!
+                        </a>
                     </div>
                 </div>
                 

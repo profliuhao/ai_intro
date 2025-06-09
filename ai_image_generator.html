@@ -226,6 +226,10 @@
             text-align: left;
             border-radius: 5px;
         }
+
+        .sample-prompt:hover {
+            background-color: #f0f4ff;
+        }
     </style>
 </head>
 <body>
@@ -244,6 +248,24 @@
             </ul>
         </div>
 
+        <div class="instructions" style="margin-bottom: 30px;">
+            <p><strong>Sample Anime Character Prompts:</strong></p>
+            <div style="max-height: 200px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 10px; text-align: left; font-size: 0.9rem; line-height: 1.5;">
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A cheerful anime panda, holding a cake, standing in front of a building with a sign of "Passaic Academy for Science & Engineering"</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A cheerful anime girl with long pink hair in twin tails, wearing a magical girl outfit with frilly skirt, standing in a field of cherry blossoms under soft sunlight</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A stoic anime warrior with spiky black hair, wielding a glowing blue sword, dramatic pose on a mountain cliff with storm clouds gathering behind him</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A cute anime catgirl with silver hair and cat ears, wearing a cozy oversized sweater, sitting by a window with warm afternoon light streaming in</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">An anime school girl with brown hair in a ponytail, wearing a traditional Japanese school uniform, running through busy Tokyo streets with determination</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A mysterious anime boy with white hair and red eyes, wearing a dark coat, standing in a moonlit forest with floating magical orbs around him</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A cheerful anime chef girl with short orange hair, wearing an apron, surrounded by colorful floating ingredients in a bright kitchen</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">An anime mage with long purple hair, casting a spell with glowing hands, intricate magic circles appearing in the air around her</p>
+                <p style="cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s;" class="sample-prompt" onclick="document.getElementById('promptInput').value = this.textContent; this.style.backgroundColor = '#e6effd'; setTimeout(() => this.style.backgroundColor = 'transparent', 300);">A cool anime motorcycle rider with messy blonde hair, leather jacket, leaning against a futuristic bike in a neon-lit cyberpunk alley</p>
+            </div>
+            <div style="margin-top: 8px; font-size: 0.8rem; color: #666; font-style: italic;">
+                Click any prompt to use it
+            </div>
+        </div>
+
         <div class="input-container">
             <textarea id="promptInput" placeholder="Describe the image you want to generate... (e.g., 'masterpiece best quality landscape with mountains and lake')"></textarea>
             
@@ -255,7 +277,7 @@
                 
                 <div class="param-group">
                     <label for="cfg">CFG Scale:</label>
-                    <input type="number" id="cfg" min="1" max="20" value="8" step="0.5">
+                    <input type="number" id="cfg" min="1" max="20" value="1" step="0.5">
                 </div>
                 
                 <div class="param-group">
@@ -329,7 +351,7 @@
             const errorMessage = document.getElementById('errorMessage');
             
             // Server configuration
-            const serverAddress = "127.0.0.1:8188";
+            const serverAddress = "130.68.125.164:8188";
             const clientId = generateUUID();
             
             // Seed locking state
