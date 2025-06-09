@@ -1,0 +1,136 @@
+<svg viewBox="0 0 1200 850" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define gradients -->
+  <defs>
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE5B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B3E5FC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB3BA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF7F88;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E1BEE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BA68C8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- AI Container -->
+  <rect x="50" y="50" width="1100" height="700" rx="20" fill="url(#aiGradient)" stroke="#333" stroke-width="3" filter="url(#shadow)"/>
+  <text x="600" y="100" text-anchor="middle" font-size="42" font-weight="bold" fill="#333">Artificial Intelligence (AI)</text>
+  <text x="600" y="130" text-anchor="middle" font-size="18" fill="#555">The broad field of creating intelligent machines</text>
+  
+  <!-- Machine Learning Container -->
+  <rect x="150" y="170" width="900" height="520" rx="15" fill="url(#mlGradient)" stroke="#333" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="600" y="210" text-anchor="middle" font-size="32" font-weight="bold" fill="#333">Machine Learning (ML)</text>
+  <text x="600" y="235" text-anchor="middle" font-size="16" fill="#555">Systems that learn from data without explicit programming</text>
+  
+  <!-- Traditional ML Techniques -->
+  <g transform="translate(170, 260)">
+    <rect x="0" y="0" width="250" height="120" rx="10" fill="#C8E6C9" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="125" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Traditional ML</text>
+    <text x="125" y="55" text-anchor="middle" font-size="14" fill="#555">• Linear/Logistic Regression</text>
+    <text x="125" y="75" text-anchor="middle" font-size="14" fill="#555">• Decision Trees</text>
+    <text x="125" y="95" text-anchor="middle" font-size="14" fill="#555">• SVM, Random Forests</text>
+  </g>
+  
+  <!-- Unsupervised Learning -->
+  <g transform="translate(170, 400)">
+    <rect x="0" y="0" width="250" height="120" rx="10" fill="#FFECB3" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="125" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Unsupervised Learning</text>
+    <text x="125" y="55" text-anchor="middle" font-size="14" fill="#555">• Clustering (K-means)</text>
+    <text x="125" y="75" text-anchor="middle" font-size="14" fill="#555">• PCA</text>
+    <text x="125" y="95" text-anchor="middle" font-size="14" fill="#555">• Anomaly Detection</text>
+  </g>
+  
+  <!-- Reinforcement Learning -->
+  <g transform="translate(170, 540)">
+    <rect x="0" y="0" width="250" height="120" rx="10" fill="#D1C4E9" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="125" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Reinforcement Learning</text>
+    <text x="125" y="55" text-anchor="middle" font-size="14" fill="#555">• Q-Learning</text>
+    <text x="125" y="75" text-anchor="middle" font-size="14" fill="#555">• Policy Gradient</text>
+    <text x="125" y="95" text-anchor="middle" font-size="14" fill="#555">• Actor-Critic</text>
+  </g>
+  
+  <!-- Deep Learning Container -->
+  <rect x="470" y="260" width="550" height="400" rx="15" fill="url(#dlGradient)" stroke="#333" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="745" y="300" text-anchor="middle" font-size="28" font-weight="bold" fill="#333">Deep Learning (DL)</text>
+  <text x="745" y="325" text-anchor="middle" font-size="15" fill="#555">Neural networks with multiple layers</text>
+  
+  <!-- Neural Network Types -->
+  <g transform="translate(490, 350)">
+    <rect x="0" y="0" width="240" height="90" rx="10" fill="url(#nnGradient)" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Neural Networks</text>
+    <text x="120" y="45" text-anchor="middle" font-size="13" fill="#555">• CNN (Computer Vision)</text>
+    <text x="120" y="62" text-anchor="middle" font-size="13" fill="#555">• RNN/LSTM (Sequential)</text>
+    <text x="120" y="79" text-anchor="middle" font-size="13" fill="#555">• Transformer (Attention)</text>
+  </g>
+  
+  <!-- Discriminative Learning -->
+  <g transform="translate(750, 350)">
+    <rect x="0" y="0" width="240" height="90" rx="10" fill="#B3E5FC" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Discriminative Models</text>
+    <text x="120" y="45" text-anchor="middle" font-size="13" fill="#555">• Image Classification</text>
+    <text x="120" y="62" text-anchor="middle" font-size="13" fill="#555">• Object Detection</text>
+    <text x="120" y="79" text-anchor="middle" font-size="13" fill="#555">• Segmentation</text>
+  </g>
+  
+  <!-- Generative Learning -->
+  <g transform="translate(490, 460)">
+    <rect x="0" y="0" width="240" height="90" rx="10" fill="#A5D6A7" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Generative Models</text>
+    <text x="120" y="45" text-anchor="middle" font-size="13" fill="#555">• GANs (DeepFake)</text>
+    <text x="120" y="62" text-anchor="middle" font-size="13" fill="#555">• VAEs (Compression)</text>
+    <text x="120" y="79" text-anchor="middle" font-size="13" fill="#555">• Diffusion (DALL-E)</text>
+  </g>
+  
+  <!-- LLMs -->
+  <g transform="translate(750, 460)">
+    <rect x="0" y="0" width="240" height="90" rx="10" fill="#FFAB91" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Large Language Models</text>
+    <text x="120" y="45" text-anchor="middle" font-size="13" fill="#555">• GPT (ChatGPT)</text>
+    <text x="120" y="62" text-anchor="middle" font-size="13" fill="#555">• Claude (Anthropic)</text>
+    <text x="120" y="79" text-anchor="middle" font-size="13" fill="#555">• BERT, T5, LLaMA</text>
+  </g>
+  
+  <!-- Deep RL -->
+  <g transform="translate(620, 570)">
+    <rect x="0" y="0" width="240" height="70" rx="10" fill="#CE93D8" stroke="#333" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Deep RL</text>
+    <text x="120" y="45" text-anchor="middle" font-size="13" fill="#555">• AlphaGo, DQN</text>
+    <text x="120" y="60" text-anchor="middle" font-size="13" fill="#555">• PPO, A3C</text>
+  </g>
+  
+  <!-- AI Applications outside ML -->
+  <g transform="translate(180, 710)">
+    <text x="0" y="0" font-size="16" font-weight="bold" fill="#333">Other AI Approaches:</text>
+    <text x="0" y="20" font-size="14" fill="#555">• Expert Systems • Symbolic AI • Search Algorithms • Planning</text>
+  </g>
+  
+<!--  &lt;!&ndash; Legend &ndash;&gt;-->
+<!--  <g transform="translate(850, 705)">-->
+<!--    <text x="0" y="0" font-size="14" fill="#333">📊 Data-driven approaches</text>-->
+<!--    <text x="0" y="20" font-size="14" fill="#333">🧠 Neural network-based</text>-->
+<!--    <text x="0" y="40" font-size="14" fill="#333">🎯 Task-specific models</text>-->
+<!--  </g>-->
+
+  <!-- Key Insights -->
+  <g transform="translate(720, 710)">
+    <text x="0" y="0" font-size="14" fill="#333" font-style="italic">Each inner layer is a specialized subset of its parent layer</text>
+  </g>
+</svg>
