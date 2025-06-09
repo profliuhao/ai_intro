@@ -288,9 +288,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 80px;
             margin: 40px 0;
             flex-wrap: wrap;
+            position: relative;
         }
 
         .network-layer {
@@ -298,6 +299,7 @@
             flex-direction: column;
             gap: 12px;
             align-items: center;
+            position: relative;
         }
 
         .neuron {
@@ -307,14 +309,16 @@
             background: linear-gradient(135deg, #4ecdc4, #45b7d1);
             box-shadow: 0 0 15px rgba(78, 205, 196, 0.6);
             animation: pulse 2s infinite;
+            position: relative;
+            z-index: 10;
         }
 
         @keyframes pulse {
-            0%, 100% { 
+            0%, 100% {
                 transform: scale(1);
                 box-shadow: 0 0 15px rgba(78, 205, 196, 0.6);
             }
-            50% { 
+            50% {
                 transform: scale(1.2);
                 box-shadow: 0 0 25px rgba(78, 205, 196, 0.8);
             }
@@ -326,21 +330,51 @@
             font-weight: bold;
         }
 
-        .connection-line {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, #4ecdc4, #45b7d1);
-            position: relative;
-            margin: 0 10px;
+        /* Connection lines between neurons */
+        .neural-network-viz::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: none;
+            z-index: 1;
         }
 
-        .connection-line::after {
-            content: '→';
+        /* Individual connection lines */
+        .connection-lines {
             position: absolute;
-            right: -15px;
-            top: -10px;
-            color: #4ecdc4;
-            font-size: 1.2rem;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .neuron-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(78, 205, 196, 0.6), rgba(69, 183, 209, 0.4));
+            transform-origin: left center;
+            animation: connectionPulse 3s infinite;
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% {
+                opacity: 0.4;
+                box-shadow: 0 0 3px rgba(78, 205, 196, 0.3);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 8px rgba(78, 205, 196, 0.6);
+            }
+        }
+
+        /* Remove the old connection-line style */
+        .connection-line {
+            display: none;
         }
 
         .algorithm-flow {
@@ -746,49 +780,48 @@
             <div class="slide-counter">2 / 9</div>
             <h2>🧠 The Foundation: Neural Networks</h2>
             <h3>Teaching Computers to "See" and "Think"</h3>
-            
-            <div class="neural-network-viz">
-                <div class="network-layer">
+
+            <div class="neural-network-viz" id="neuralNetworkViz">
+                <div class="network-layer" data-layer="0">
                     <div class="layer-label">Input Layer</div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
+                    <div class="neuron" data-neuron="0"></div>
+                    <div class="neuron" data-neuron="1"></div>
+                    <div class="neuron" data-neuron="2"></div>
+                    <div class="neuron" data-neuron="3"></div>
+                    <div class="neuron" data-neuron="4"></div>
                     <div style="color: #888; font-size: 0.8rem;">Text/Image Data</div>
                 </div>
-                
-                <div class="connection-line"></div>
-                
-                <div class="network-layer">
+
+                <div class="network-layer" data-layer="1">
                     <div class="layer-label">Hidden Layers</div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
+                    <div class="neuron" data-neuron="0"></div>
+                    <div class="neuron" data-neuron="1"></div>
+                    <div class="neuron" data-neuron="2"></div>
+                    <div class="neuron" data-neuron="3"></div>
                     <div style="color: #888; font-size: 0.8rem;">Pattern Learning</div>
                 </div>
-                
-                <div class="connection-line"></div>
-                
-                <div class="network-layer">
+
+                <div class="network-layer" data-layer="2">
                     <div class="layer-label">More Layers</div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
+                    <div class="neuron" data-neuron="0"></div>
+                    <div class="neuron" data-neuron="1"></div>
+                    <div class="neuron" data-neuron="2"></div>
                     <div style="color: #888; font-size: 0.8rem;">Deep Understanding</div>
                 </div>
-                
-                <div class="connection-line"></div>
-                
-                <div class="network-layer">
+
+                <div class="network-layer" data-layer="3">
                     <div class="layer-label">Output Layer</div>
-                    <div class="neuron"></div>
-                    <div class="neuron"></div>
+                    <div class="neuron" data-neuron="0"></div>
+                    <div class="neuron" data-neuron="1"></div>
                     <div style="color: #888; font-size: 0.8rem;">Generated Content</div>
                 </div>
+
+                <svg class="connection-lines" width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                    <!-- Connection lines will be dynamically generated -->
+                </svg>
             </div>
-            
+
+
             <div class="comparison-grid">
                 <div class="comparison-card">
                     <div class="card-title">🧠 Human Brain</div>
@@ -1447,6 +1480,12 @@
                 const progress = ((currentSlide + 1) / totalSlides) * 100;
                 progressBar.style.width = progress + '%';
             }
+
+            // Generate neural network connections when slide 2 is active
+            if (currentSlide === 1) {
+                setTimeout(generateNeuralConnections, 1000);
+            }
+
         }
 
         function changeSlide(direction) {
@@ -1456,6 +1495,52 @@
                 showSlide(currentSlide - 1);
             }
         }
+
+        function generateNeuralConnections() {
+            const networkViz = document.getElementById('neuralNetworkViz');
+            const svg = networkViz.querySelector('.connection-lines');
+
+            // Clear existing connections
+            svg.innerHTML = '';
+
+            const layers = networkViz.querySelectorAll('.network-layer');
+
+            for (let i = 0; i < layers.length - 1; i++) {
+                const currentLayer = layers[i];
+                const nextLayer = layers[i + 1];
+
+                const currentNeurons = currentLayer.querySelectorAll('.neuron');
+                const nextNeurons = nextLayer.querySelectorAll('.neuron');
+
+                currentNeurons.forEach((currentNeuron, currentIndex) => {
+                    nextNeurons.forEach((nextNeuron, nextIndex) => {
+                        // Get positions
+                        const currentRect = currentNeuron.getBoundingClientRect();
+                        const nextRect = nextNeuron.getBoundingClientRect();
+                        const vizRect = networkViz.getBoundingClientRect();
+
+                        // Calculate relative positions
+                        const x1 = currentRect.left + currentRect.width/2 - vizRect.left;
+                        const y1 = currentRect.top + currentRect.height/2 - vizRect.top;
+                        const x2 = nextRect.left + nextRect.width/2 - vizRect.left;
+                        const y2 = nextRect.top + nextRect.height/2 - vizRect.top;
+
+                        // Create line
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', x1);
+                        line.setAttribute('y1', y1);
+                        line.setAttribute('x2', x2);
+                        line.setAttribute('y2', y2);
+                        line.setAttribute('stroke', 'rgba(78, 205, 196, 0.4)');
+                        line.setAttribute('stroke-width', '1');
+                        line.style.animation = `connectionPulse 3s infinite ${Math.random() * 2}s`;
+
+                        svg.appendChild(line);
+                    });
+                });
+            }
+        }
+
 
         function runDiffusion() {
             const slider = document.getElementById('noiseSlider');
@@ -1609,6 +1694,14 @@
 
         // Initialize
         showSlide(0);
+
+        // Regenerate connections on window resize
+        window.addEventListener('resize', () => {
+            if (currentSlide === 1) {
+                setTimeout(generateNeuralConnections, 100);
+            }
+        });
+
 
         // Add hover effects to interactive elements
         document.querySelectorAll('.diffusion-step, .flow-step, .comparison-card').forEach(card => {
